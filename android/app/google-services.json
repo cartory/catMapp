@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "876019085213",
+    "firebase_url": "https://catmapp-b43b8-default-rtdb.firebaseio.com",
+    "project_id": "catmapp-b43b8",
+    "storage_bucket": "catmapp-b43b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876019085213:android:c44ea9a593335e80248974",
+        "android_client_info": {
+          "package_name": "com.example.catmapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876019085213-2g3u5f7nd5vfdg43inusc5perbbg44o7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.catmapp",
+            "certificate_hash": "927a4695012eb6ab1e18271f131b5f984fef6066"
+          }
+        },
+        {
+          "client_id": "876019085213-k4mve9vkvnhn4qa9rltk39smm20uq5uq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMh1AX6C1fJY7233wFzmIknfRXPpDMjHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "876019085213-k4mve9vkvnhn4qa9rltk39smm20uq5uq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
