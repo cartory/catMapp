@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'pages/home_page.dart';
 
 import 'pages/auth/login_page.dart';
-import 'pages/auth/profile_page.dart';
+// import 'pages/auth/profile_screen.dart';
 
 final box = GetStorage();
 
@@ -24,7 +24,7 @@ final getPages = [
   GetPage(name: Routes.home, page: () => const HomePage()),
   // auth
   GetPage(name: Routes.login, page: () => const LoginPage()),
-  GetPage(name: Routes.profile, page: () => const ProfilePage())
+  // GetPage(name: Routes.profile, page: () => const ProfilePage())
 ];
 
 // THEME STYLE
@@ -48,20 +48,40 @@ final themeData = ThemeData(
     elevation: 0,
     backgroundColor: Colors.white,
     selectedItemColor: Color(0xff383D4A),
-    unselectedItemColor: Colors.white,
-    type: BottomNavigationBarType.shifting,
+    unselectedItemColor: Color(0xff383D4A),
+    type: BottomNavigationBarType.fixed,
+    showSelectedLabels: true,
+    showUnselectedLabels: true,
     // selected
-    selectedLabelStyle: TextStyle(color: Colors.white),
-    selectedIconTheme: IconThemeData(color: Colors.white),
+    // selectedLabelStyle: TextStyle(color: Colors.white),
+    selectedLabelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+    selectedIconTheme: IconThemeData(color: Color(0xffEB008B)),
     // unselected
     unselectedLabelStyle: TextStyle(color: Color(0xff383D4A)),
     unselectedIconTheme: IconThemeData(color: Color(0xff383D4A)),
   ),
   // appBar Theme
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     elevation: 0,
-    centerTitle: true,
+    centerTitle: false,
+    toolbarHeight: Get.width * .16,
     backgroundColor: Colors.white,
+    iconTheme: const IconThemeData(
+      size: 20,
+      color: Colors.white,
+    ),
+    titleTextStyle: const TextStyle(
+      fontSize: 18,
+      wordSpacing: 0,
+      letterSpacing: 0,
+      color: Colors.black,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.bold,
+    ),
+    actionsIconTheme: const IconThemeData(
+      size: 34,
+      color: Colors.grey,
+    ),
   ),
   //
   outlinedButtonTheme: OutlinedButtonThemeData(
