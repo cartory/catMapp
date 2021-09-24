@@ -46,3 +46,45 @@ class TextDivider extends StatelessWidget {
     );
   }
 }
+
+class MyBottomBar extends StatefulWidget {
+  final int currentIndex;
+  final void Function(int)? onTap;
+  final List<BottomNavigationBarItem> items;
+
+  const MyBottomBar({
+    Key? key,
+    this.onTap,
+    this.items = const [],
+    this.currentIndex = 0,
+  }) : super(key: key);
+
+  @override
+  State<MyBottomBar> createState() => _MyBottomBarState();
+}
+
+class _MyBottomBarState extends State<MyBottomBar> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(50),
+          topRight: Radius.circular(50),
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(50),
+          topRight: Radius.circular(50),
+        ),
+        child: BottomNavigationBar(
+          elevation: 0,
+          items: widget.items,
+          onTap: widget.onTap,
+          currentIndex: widget.currentIndex,
+        ),
+      ),
+    );
+  }
+}
