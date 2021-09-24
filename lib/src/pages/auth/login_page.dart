@@ -11,34 +11,37 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+      body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        children: [
-          buildHeader(),
-          const TextDivider(text: 'Insert your Account'),
-          const MyTextField(
-            margin: EdgeInsets.symmetric(vertical: 7, horizontal: 13),
-            hintText: 'Email Address',
-            prefixIcon: Icon(
-              Icons.email_outlined,
-              size: 20,
-              color: Colors.black45,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            buildHeader(),
+            const TextDivider(text: 'Insert your Account'),
+            const MyTextField(
+              margin: EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+              hintText: 'Email Address',
+              prefixIcon: Icon(
+                Icons.email_outlined,
+                size: 20,
+                color: Colors.black45,
+              ),
             ),
-          ),
-          const MyTextField(
-            hiddenText: true,
-            hintText: 'Password',
-            margin: EdgeInsets.symmetric(vertical: 7, horizontal: 13),
-            prefixIcon: Icon(
-              Icons.lock_outline,
-              size: 20,
-              color: Colors.black45,
+            const MyTextField(
+              hiddenText: true,
+              hintText: 'Password',
+              margin: EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+              prefixIcon: Icon(
+                Icons.lock_outline,
+                size: 20,
+                color: Colors.black45,
+              ),
             ),
-          ),
-          // social networks
-          socialNetworks(),
-        ],
+            // social networks
+            socialNetworks(),
+          ],
+        ),
       ),
     );
   }
@@ -79,7 +82,7 @@ class LoginPage extends StatelessWidget {
     return Container(
       height: Get.size.height / 3,
       alignment: Alignment.center,
-      padding: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
