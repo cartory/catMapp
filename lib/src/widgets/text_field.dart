@@ -14,20 +14,22 @@ class MyTextField extends StatefulWidget {
 
   final EdgeInsetsGeometry? margin;
 
+  final void Function()? onClear;
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
 
   const MyTextField({
     Key? key,
     this.margin,
+    this.onClear,
     this.hintText,
     this.validator,
     this.onChanged,
-    this.hiddenText = false,
+    this.prefixIcon,
     this.initialValue,
     this.keyboardType,
+    this.hiddenText = false,
     this.textAlign = TextAlign.start,
-    this.prefixIcon
   }) : super(key: key);
 
   @override
@@ -89,6 +91,7 @@ class _MyTextFieldState extends State<MyTextField> {
                     color: Get.theme.colorScheme.secondary,
                   ),
                   onTap: () {
+                    widget.onClear?.call();
                     _textController.clear();
                     setState(() => _showClearIcon = false);
                   },
