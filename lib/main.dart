@@ -4,7 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'src/globals.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import 'src/config.dart';
+import 'src/services/auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +18,7 @@ void main() async {
   ]);
 
   await GetStorage.init();
+  await Firebase.initializeApp();
 
   runApp(const MyApp());
 }
@@ -27,7 +31,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: themeData,
       getPages: getPages,
-      initialRoute: Routes.login.toString(),
+      initialRoute: Auth.instance.isAuth ? Routes.home : Routes.login,
     );
   }
 }
