@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/containers.dart' show MyBottomBar;
+import 'package:cached_network_image/cached_network_image.dart';
 
-import 'auth/home_screen.dart';
-import 'auth/profile_screen.dart';
-
-import 'places/place_screen.dart';
+import 'package:catmapp/src/globals.dart';
+import 'package:catmapp/src/config.dart' show box;
 
 Map<int, Widget? Function()> _getCurrentScreen = {
   0: () => const HomeScreen(),
-  1: () {
-    return Container(
-      color: Colors.lightGreen,
-      child: const Center(child: Text('Task Screen')),
-    );
-  },
   3: () => const PlaceScreen(),
-  4: () => const ProfileScreen(),
+  4: () => ProfileScreen(),
+  1: () => Container(color: Colors.lightGreen, child: const Center(child: Text('Task Screen'))),
 };
 
 class HomePage extends StatefulWidget {
@@ -27,13 +20,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  User? _user;
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _user = User.fromRawJson(box.read<String>('user'));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(),
+      // appBar: appBar(),
       body: _getCurrentScreen[_currentIndex]?.call(),
+      extendBody: true,
       bottomNavigationBar: MyBottomBar(
         currentIndex: _currentIndex,
         items: [
@@ -66,14 +67,18 @@ class _HomePageState extends State<HomePage> {
       leading: Container(
         alignment: Alignment.center,
         margin: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-        child: const Icon(Icons.person, color: Colors.white),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(17),
+          child: CachedNetworkImage(
+            imageUrl: _user!.photoUrl ?? '',
+          ),
+        ),
         decoration: BoxDecoration(
-          color: const Color(0xffEB008B),
           borderRadius: BorderRadius.circular(17),
         ),
       ),
-      title: const Text(
-        'Welcome, User',
+      title: Text(
+        'Welcome, ${_user?.name}',
         textAlign: TextAlign.start,
       ),
       actions: [
