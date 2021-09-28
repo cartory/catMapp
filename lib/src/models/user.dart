@@ -9,6 +9,7 @@ class User {
     this.password,
     this.photoUrl,
     this.phoneNumber,
+    this.verifiedEmail,
   });
 
   int? id;
@@ -18,6 +19,7 @@ class User {
   String? password;
   String? photoUrl;
   String? phoneNumber;
+  String? verifiedEmail;
 
   factory User.fromRawJson(String? str) => User.fromJson(json.decode(str ?? '{}'));
 
@@ -32,6 +34,7 @@ class User {
       password: json["password"],
       photoUrl: json["photoURL"],
       phoneNumber: json["phoneNumber"],
+      verifiedEmail: json["verifiedEmail"],
     );
   }
 
@@ -44,6 +47,7 @@ class User {
       "password": password,
       "photoURL": photoUrl,
       "phoneNumber": phoneNumber,
+      "verifiedEmail": verifiedEmail,
     };
   }
 }
