@@ -43,8 +43,8 @@ class Auth {
 
       _user = User(
         uid: uid,
-        name: authResult.user!.displayName,
         email: authResult.user!.email,
+        name: authResult.user!.displayName,
         photoUrl: authResult.user!.photoURL,
         phoneNumber: authResult.user!.phoneNumber,
       );
