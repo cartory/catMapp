@@ -12,6 +12,7 @@ class MyTextField extends StatefulWidget {
 
   final Widget? prefixIcon;
 
+  final double circularRadius;
   final EdgeInsetsGeometry? margin;
 
   final void Function()? onClear;
@@ -29,6 +30,7 @@ class MyTextField extends StatefulWidget {
     this.initialValue,
     this.keyboardType,
     this.hiddenText = false,
+    this.circularRadius = 15,
     this.textAlign = TextAlign.start,
   }) : super(key: key);
 
@@ -38,11 +40,17 @@ class MyTextField extends StatefulWidget {
 
 class _MyTextFieldState extends State<MyTextField> {
   bool _showClearIcon = false;
-  final _textController = TextEditingController();
+  TextEditingController? _textController;
+
+  @override
+  void initState() {
+    _textController = TextEditingController(text: widget.initialValue);
+    super.initState();
+  }
 
   @override
   void dispose() {
-    _textController.dispose();
+    _textController!.dispose();
     super.dispose();
   }
 
@@ -52,7 +60,7 @@ class _MyTextFieldState extends State<MyTextField> {
       margin: widget.margin,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(widget.circularRadius),
         boxShadow: const [
           BoxShadow(
             blurRadius: 1,
@@ -77,7 +85,7 @@ class _MyTextFieldState extends State<MyTextField> {
 
           widget.onChanged?.call(text);
         },
-        initialValue: widget.initialValue,
+        // initialValue: _textController!.text,
         keyboardType: widget.keyboardType,
         decoration: InputDecoration(
           hintText: widget.hintText,
@@ -91,9 +99,10 @@ class _MyTextFieldState extends State<MyTextField> {
                     color: Get.theme.colorScheme.secondary,
                   ),
                   onTap: () {
-                    widget.onClear?.call();
-                    _textController.clear();
+                    _textController!.clear();
                     setState(() => _showClearIcon = false);
+
+                    widget.onClear?.call();
                   },
                 )
               : null,
