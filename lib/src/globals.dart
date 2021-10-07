@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 export 'models/user.dart';
 
 export 'pages/home_page.dart';
@@ -12,3 +14,12 @@ export 'widgets/containers.dart';
 
 export 'services/auth.dart';
 export 'services/storage.dart';
+
+// MODELS
+export 'models/user.dart';
+export 'models/place.dart';
+
+// APIS - ENDPOINTS
+export 'apis/place_api.dart';
+
+const API_URL = 'https://video-rental-system.herokuapp.com/api';
