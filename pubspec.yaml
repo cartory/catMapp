@@ -34,8 +34,9 @@ dependencies:
   get: ^4.3.8
   get_storage: ^2.0.3
 
+  http: ^0.13.4
   google_sign_in: ^5.1.1
-  
+
   # widgets dependencies
   cupertino_tabbar: ^2.0.0
   cached_network_image: ^3.1.0
