@@ -66,23 +66,26 @@ class MyBottomBar extends StatefulWidget {
 class _MyBottomBarState extends State<MyBottomBar> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(50),
-          topRight: Radius.circular(50),
+    return Transform.translate(
+      offset: const Offset(0, 15),
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40),
+            topRight: Radius.circular(40),
+          ),
         ),
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(50),
-          topRight: Radius.circular(50),
-        ),
-        child: BottomNavigationBar(
-          elevation: 0,
-          items: widget.items,
-          onTap: widget.onTap,
-          currentIndex: widget.currentIndex,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(40),
+            topRight: Radius.circular(40),
+          ),
+          child: BottomNavigationBar(
+            elevation: 0,
+            items: widget.items,
+            onTap: widget.onTap,
+            currentIndex: widget.currentIndex,
+          ),
         ),
       ),
     );
