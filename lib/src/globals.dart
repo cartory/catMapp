@@ -20,6 +20,6 @@ export 'models/user.dart';
 export 'models/place.dart';
 
 // APIS - ENDPOINTS
-export 'apis/place_api.dart';
+export 'getX/get_place.dart';
 
 const API_URL = 'https://video-rental-system.herokuapp.com/api';
