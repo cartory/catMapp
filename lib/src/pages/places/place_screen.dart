@@ -49,8 +49,13 @@ class _PlaceScreenState extends State<PlaceScreen> {
           isLoadingChildren ? reloadSliver() : verticalSliver(getPlace.places[selectedPlace].places),
         ]);
       }
-      return CustomScrollView(
-        slivers: slivers,
+      return RefreshIndicator(
+        onRefresh: () {
+          return getPlace.findAll(refresh: true).whenComplete(() {
+            setState(() => selectedPlace = 0);
+          });
+        },
+        child: CustomScrollView(slivers: slivers),
       );
     });
   }
@@ -85,7 +90,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
                 ),
                 onTap: () {
                   setState(() => getPlace.places.clear());
-                  getPlace.replaceAll(places!.toList(), index).whenComplete(() {
+                  getPlace.replaceAll(places.toList(), index).whenComplete(() {
                     setState(() => selectedPlace = index);
                   });
                 },
@@ -146,6 +151,14 @@ class _PlaceScreenState extends State<PlaceScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          Text(
+                            place.code ?? '',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(5),
                             child: Icon(
@@ -155,7 +168,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
                             ),
                           ),
                           Text(
-                            '${place.places?.length ?? 0} place(s)',
+                            '${place.places?.length ?? '?'} place(s)',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: Colors.white,
