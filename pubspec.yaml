@@ -34,12 +34,14 @@ dependencies:
   get: ^4.3.8
   get_storage: ^2.0.3
 
-  http: ^0.13.4
+  http: ^0.13.0
   google_sign_in: ^5.1.1
 
   # widgets dependencies
-  cupertino_tabbar: ^2.0.0
+  animate_do: ^2.0.0
+  # cupertino_tabbar: ^2.0.0
   cached_network_image: ^3.1.0
+  # infinite_scroll_pagination: ^3.1.0
   syncfusion_flutter_calendar: ^19.2.62
 
   # firebase dependencies
