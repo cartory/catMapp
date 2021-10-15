@@ -1,11 +1,15 @@
 // ignore_for_file: avoid_print
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:http/http.dart' as http;
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:catmapp/src/config.dart' show box;
-import 'package:catmapp/src/globals.dart' show User;
+import 'package:catmapp/src/globals.dart' show User, API_URL;
 
 class Auth {
   static final _instance = Auth();
@@ -64,5 +68,26 @@ class Auth {
       await _google.signOut();
     }
     await box.erase();
+  }
+
+  Future<bool> storeUser(User user) async {
+    try {
+      final res = await http.post(
+        Uri.parse('$API_URL/users'),
+        headers: {'Content-type': 'application/json'},
+        body: user.toRawJson(),
+      );
+
+      if (res.statusCode == 500) {
+        final data = jsonDecode(res.body);
+        throw Exception(data['message']);
+      }
+
+      return true;
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return false;
   }
 }
