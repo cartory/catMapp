@@ -28,7 +28,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
   @override
   void initState() {
     super.initState();
-    getPlace.findAll().whenComplete(() => setState(() => Null));
+    getPlace.findAll(refresh: true).whenComplete(() => setState(() => Null));
   }
 
   @override
@@ -72,21 +72,23 @@ class _PlaceScreenState extends State<PlaceScreen> {
         (context, index) {
           final place = places![index];
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Card(
-              elevation: .3,
+              elevation: 2,
+              shadowColor: Colors.primaries[selectedPlace % Colors.primaries.length].shade100,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
-                side: BorderSide(
-                  width: .3,
-                  color: Colors.primaries[selectedPlace % Colors.primaries.length].shade100,
-                ),
               ),
               child: ListTile(
                 subtitle: Text(place.description.toString()),
                 title: Text('${place.type!.name.toString().capitalize} ${place.code}'),
-                leading: FittedBox(
-                  child: Icon(typeIcons[place.type!.name], size: 40),
+                leading: Transform.translate(
+                  offset: const Offset(6, 0),
+                  child: Icon(
+                    typeIcons[place.type!.name],
+                    size: 33,
+                    color: Get.theme.colorScheme.secondary,
+                  ),
                 ),
                 onTap: () {
                   setState(() => getPlace.places.clear());
@@ -106,11 +108,12 @@ class _PlaceScreenState extends State<PlaceScreen> {
   Widget horizontalSliver(List<Place>? places) {
     return SliverToBoxAdapter(
       child: Container(
-        height: Get.height / 5.25,
         margin: EdgeInsets.zero,
+        height: Get.height / 5.25,
         child: SlideInRight(
           duration: const Duration(milliseconds: 250),
           child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             itemCount: places!.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
@@ -118,27 +121,22 @@ class _PlaceScreenState extends State<PlaceScreen> {
               return Container(
                 width: Get.height / 5.3,
                 margin: const EdgeInsets.all(5),
-                child: InkWell(
-                  onTap: () async {
-                    if (index != selectedPlace) {
-                      setState(() {
+                child: Tooltip(
+                  message: place.name.toString(),
+                  child: InkWell(
+                    onTap: () async {
+                      if (index != selectedPlace) {
                         selectedPlace = index;
-                        isLoadingChildren = true;
-                      });
-                      getPlace.findOne(place.id!.toInt(), index).whenComplete(() {
-                        setState(() => isLoadingChildren = false);
-                      });
-                    }
-                  },
-                  child: Tooltip(
-                    message: place.name.toString(),
+                        setState(() => isLoadingChildren = true);
+                        getPlace.findOne(place.id!.toInt(), index).whenComplete(() {
+                          setState(() => isLoadingChildren = false);
+                        });
+                      }
+                    },
                     child: Card(
-                      elevation: .3,
-                      color: Colors.primaries[index % Colors.primaries.length].shade500,
-                      borderOnForeground: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                      elevation: 3,
+                      shadowColor: Colors.primaries[selectedPlace % Colors.primaries.length].shade100,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,33 +144,24 @@ class _PlaceScreenState extends State<PlaceScreen> {
                           Text(
                             place.type!.name.toString().capitalize ?? '',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
                             place.code ?? '',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(5),
                             child: Icon(
                               typeIcons[place.type!.name],
-                              color: Colors.white,
                               size: 45,
+                              color: Get.theme.colorScheme.secondary,
                             ),
                           ),
                           Text(
                             '${place.places?.length ?? '?'} place(s)',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
                           ),
                         ],
                       ),
