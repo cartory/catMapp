@@ -1,3 +1,4 @@
+import 'package:catmapp/src/widgets/containers.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -50,19 +51,23 @@ class _PlaceScreenState extends State<PlaceScreen> {
         ]);
       }
       return RefreshIndicator(
-        onRefresh: () {
-          return getPlace.findAll(refresh: true).whenComplete(() {
-            setState(() => selectedPlace = 0);
-          });
-        },
+        color: Get.theme.colorScheme.secondary,
         child: CustomScrollView(slivers: slivers),
+        onRefresh: () => getPlace.findAll(refresh: true).whenComplete(() {
+          setState(() => selectedPlace = 0);
+        }),
       );
     });
   }
 
   Widget reloadSliver() {
     return const SliverFillRemaining(
-      child: CircularProgressIndicator.adaptive(),
+      child: Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 3,
+          color: Color(0xff383D4A),
+        ),
+      ),
     );
   }
 
@@ -80,14 +85,25 @@ class _PlaceScreenState extends State<PlaceScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: ListTile(
-                subtitle: Text(place.description.toString()),
+                minVerticalPadding: 7,
+                contentPadding: EdgeInsets.zero,
                 title: Text('${place.type!.name.toString().capitalize} ${place.code}'),
-                leading: Transform.translate(
-                  offset: const Offset(6, 0),
-                  child: Icon(
-                    typeIcons[place.type!.name],
-                    size: 33,
-                    color: Get.theme.colorScheme.secondary,
+                subtitle: Text(place.description.toString()),
+                minLeadingWidth: 30,
+                leading: SizedBox(
+                  height: double.infinity,
+                  width: 30,
+                  child: Transform.translate(
+                    offset: const Offset(8, 0),
+                    child: Icon(typeIcons[place.type!.name], size: 30),
+                  ),
+                ),
+                trailing: SizedBox(
+                  height: double.infinity,
+                  width: 30,
+                  child: Transform.translate(
+                    offset: const Offset(-5, 0),
+                    child: const Icon(Icons.navigate_next_rounded, size: 30),
                   ),
                 ),
                 onTap: () {
@@ -118,56 +134,45 @@ class _PlaceScreenState extends State<PlaceScreen> {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               final place = places[index];
-              return Container(
-                width: Get.height / 5.3,
-                margin: const EdgeInsets.all(5),
-                child: Tooltip(
-                  message: place.name.toString(),
-                  child: InkWell(
-                    onTap: () async {
-                      if (index != selectedPlace) {
-                        selectedPlace = index;
-                        setState(() => isLoadingChildren = true);
-                        getPlace.findOne(place.id!.toInt(), index).whenComplete(() {
-                          setState(() => isLoadingChildren = false);
-                        });
-                      }
-                    },
-                    child: Card(
-                      elevation: 3,
-                      shadowColor: Colors.primaries[selectedPlace % Colors.primaries.length].shade100,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            place.type!.name.toString().capitalize ?? '',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            place.code ?? '',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Icon(
-                              typeIcons[place.type!.name],
-                              size: 45,
-                              color: Get.theme.colorScheme.secondary,
-                            ),
-                          ),
-                          Text(
-                            '${place.places?.length ?? '?'} place(s)',
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
+              return ButtonCard(
+                elevation: 2,
+                height: Get.height / 5.25,
+                borderRadius: BorderRadius.circular(20),
+                isPressed: index == selectedPlace,
+                shadowColor: Colors.primaries[selectedPlace % Colors.primaries.length].shade100,
+                onPressed: () {
+                  if (index != selectedPlace) {
+                    selectedPlace = index;
+                    setState(() => isLoadingChildren = true);
+                    getPlace.findOne(place.id!.toInt(), index).whenComplete(() {
+                      setState(() => isLoadingChildren = false);
+                    });
+                  }
+                },
+                children: [
+                  Text(
+                    place.type!.name.toString().capitalize ?? '',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    place.code ?? '',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Icon(
+                      typeIcons[place.type!.name],
+                      size: 45,
+                      color: Get.theme.colorScheme.secondary,
                     ),
                   ),
-                ),
+                  Text(
+                    '${place.places?.length ?? '?'} place(s)',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               );
             },
           ),
