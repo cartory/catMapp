@@ -1,10 +1,11 @@
-import 'package:catmapp/src/widgets/containers.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:rounded_expansion_tile/rounded_expansion_tile.dart';
 
-import 'package:catmapp/src/globals.dart' show GetPlace, Place;
+import 'package:catmapp/src/globals.dart' show GetPlace, Place, ButtonCard, LabelIconButton;
 
 const typeIcons = {
   'office': Icons.event_seat_rounded,
@@ -79,39 +80,71 @@ class _PlaceScreenState extends State<PlaceScreen> {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Card(
-              elevation: 2,
-              shadowColor: Colors.primaries[selectedPlace % Colors.primaries.length].shade100,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: ListTile(
-                minVerticalPadding: 7,
-                contentPadding: EdgeInsets.zero,
+              elevation: 1,
+              color: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
+              child: RoundedExpansionTile(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
                 title: Text('${place.type!.name.toString().capitalize} ${place.code}'),
-                subtitle: Text(place.description.toString()),
+                subtitle: Text(place.name.toString()),
                 minLeadingWidth: 30,
                 leading: SizedBox(
                   height: double.infinity,
-                  width: 30,
-                  child: Transform.translate(
-                    offset: const Offset(8, 0),
-                    child: Icon(typeIcons[place.type!.name], size: 30),
-                  ),
+                  child: Icon(typeIcons[place.type!.name], size: 30),
                 ),
-                trailing: SizedBox(
+                trailing: const SizedBox(
                   height: double.infinity,
-                  width: 30,
-                  child: Transform.translate(
-                    offset: const Offset(-5, 0),
-                    child: const Icon(Icons.navigate_next_rounded, size: 30),
-                  ),
+                  child: Icon(Icons.chevron_right_sharp, size: 25),
                 ),
-                onTap: () {
-                  setState(() => getPlace.places.clear());
-                  getPlace.replaceAll(places.toList(), index).whenComplete(() {
-                    setState(() => selectedPlace = index);
-                  });
-                },
+                childrenPadding: const EdgeInsets.all(10),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: CachedNetworkImage(
+                      height: 150,
+                      imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
+                      imageBuilder: (context, imageProvider) {
+                        return Container(
+                          margin: EdgeInsets.zero,
+                          padding: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey,
+                            image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      place.description.toString(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  // const Divider(indent: 30, endIndent: 30),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      LabelIconButton(iconData: Icons.edit, label: 'edit', onPressed: () {}),
+                      LabelIconButton(iconData: Icons.task, label: 'tasks', onPressed: () {}),
+                      LabelIconButton(iconData: Icons.inventory, label: 'stock', onPressed: () {}),
+                      LabelIconButton(
+                        iconData: Icons.more,
+                        label: 'more',
+                        onPressed: () {
+                          setState(() => getPlace.places.clear());
+                          getPlace.replaceAll(places.toList(), index).whenComplete(() {
+                            setState(() => selectedPlace = index);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           );
@@ -169,7 +202,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
                     ),
                   ),
                   Text(
-                    '${place.places?.length ?? '?'} place(s)',
+                    '${place.places?.length ?? 0} place(s)',
                     textAlign: TextAlign.center,
                   ),
                 ],
