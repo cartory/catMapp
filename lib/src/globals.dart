@@ -9,6 +9,7 @@ export 'pages/auth/home_screen.dart';
 export 'pages/auth/profile_screen.dart';
 export 'pages/places/place_screen.dart';
 
+export 'widgets/buttons.dart';
 export 'widgets/text_field.dart';
 export 'widgets/containers.dart';
 
@@ -18,6 +19,7 @@ export 'services/storage.dart';
 // MODELS
 export 'models/user.dart';
 export 'models/place.dart';
+export 'models/equipment.dart';
 
 // APIS - ENDPOINTS
 export 'getX/get_place.dart';
