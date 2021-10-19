@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../globals.dart' show Place, API_URL;
+import 'package:catmapp/src/globals.dart' show Place, API_URL;
 
 class GetPlace extends GetxController {
   final _places = <Place>[].obs;
