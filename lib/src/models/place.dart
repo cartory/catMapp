@@ -26,6 +26,8 @@ class Place {
 
   String toRawJson() => json.encode(toJson());
 
+  bool get hasPlaces => !Type.nodePlaces.contains(type!.name.toString());
+
   factory Place.fromJson(Map<String, dynamic> json) {
     return Place(
       id: json["id"],
@@ -52,6 +54,8 @@ class Place {
 }
 
 class Type {
+  static const nodePlaces = ['classroom', 'office'];
+
   Type({
     this.id,
     this.name,
