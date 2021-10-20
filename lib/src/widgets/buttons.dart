@@ -1,5 +1,58 @@
 import 'package:flutter/material.dart';
 
+class MyFloatingActionButton extends StatefulWidget {
+  final IconData? iconData;
+  final void Function()? onPressed;
+
+  const MyFloatingActionButton({
+    Key? key,
+    @required this.iconData,
+    @required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  State<MyFloatingActionButton> createState() => _MyFloatingActionButtonState();
+}
+
+class _MyFloatingActionButtonState extends State<MyFloatingActionButton> with SingleTickerProviderStateMixin {
+  late final Animation<double> animation;
+  late final AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    animation = Tween<double>(begin: 0, end: 1).animate(
+      controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 150)),
+    );
+
+    controller.forward();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: animation.value,
+          child: child,
+        );
+      },
+      child: FloatingActionButton(
+        child: Icon(widget.iconData),
+        onPressed: widget.onPressed,
+      ),
+    );
+  }
+}
+
 class LabelIconButton extends StatelessWidget {
   final String? label;
   final IconData? iconData;
@@ -30,7 +83,14 @@ class LabelIconButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(iconData, color: const Color(0xff383D4A)),
+          Padding(
+            padding: const EdgeInsets.all(1),
+            child: Icon(
+              iconData,
+              color: const Color(0xff383D4A),
+              size: 25,
+            ),
+          ),
           Text(
             label.toString(),
             style: const TextStyle(
@@ -86,7 +146,7 @@ class ButtonCard extends StatelessWidget {
         child: Card(
           shadowColor: shadowColor,
           elevation: isPressed ? 0 : elevation,
-          color: isPressed ? Colors.grey[50] : color,
+          color: isPressed ? Colors.grey[200] : color,
           shape: RoundedRectangleBorder(
             borderRadius: borderRadius ?? BorderRadius.zero,
           ),
