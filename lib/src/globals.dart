@@ -7,7 +7,10 @@ export 'pages/auth/login_page.dart';
 
 export 'pages/auth/home_screen.dart';
 export 'pages/auth/profile_screen.dart';
+
 export 'pages/places/place_screen.dart';
+
+export 'pages/inventory/inventory_page.dart';
 
 export 'widgets/buttons.dart';
 export 'widgets/text_field.dart';
