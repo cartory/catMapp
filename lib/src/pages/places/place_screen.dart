@@ -51,6 +51,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
           isLoadingChildren ? reloadSliver() : verticalSliver(getPlace.places[selectedPlace].places),
         ]);
       }
+
       return RefreshIndicator(
         color: Get.theme.colorScheme.secondary,
         child: CustomScrollView(slivers: slivers),
@@ -128,21 +129,7 @@ class _PlaceScreenState extends State<PlaceScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      LabelIconButton(iconData: Icons.edit, label: 'edit', onPressed: () {}),
-                      LabelIconButton(iconData: Icons.task, label: 'tasks', onPressed: () {}),
-                      LabelIconButton(iconData: Icons.inventory, label: 'stock', onPressed: () {}),
-                      LabelIconButton(
-                        iconData: Icons.more,
-                        label: 'more',
-                        onPressed: () {
-                          setState(() => getPlace.places.clear());
-                          getPlace.replaceAll(places.toList(), index).whenComplete(() {
-                            setState(() => selectedPlace = index);
-                          });
-                        },
-                      ),
-                    ],
+                    children: getLabelIcons(places, index),
                   ),
                 ],
               ),
@@ -152,6 +139,30 @@ class _PlaceScreenState extends State<PlaceScreen> {
         childCount: places?.length ?? 0,
       ),
     );
+  }
+
+  List<Widget> getLabelIcons(List<Place>? places, int index) {
+    final labelIcons = [
+      LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
+      LabelIconButton(iconData: Icons.task_rounded, label: 'tasks', onPressed: () {}),
+      LabelIconButton(iconData: Icons.inventory_2_rounded, label: 'inventory', onPressed: () {}),
+    ];
+
+    labelIcons.addIf(
+      places![index].hasPlaces,
+      LabelIconButton(
+        iconData: Icons.more_rounded,
+        label: 'more',
+        onPressed: () {
+          setState(() => getPlace.places.clear());
+          getPlace.replaceAll(places.toList(), index).whenComplete(() {
+            setState(() => selectedPlace = index);
+          });
+        },
+      ),
+    );
+
+    return labelIcons;
   }
 
   Widget horizontalSliver(List<Place>? places) {
