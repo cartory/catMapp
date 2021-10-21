@@ -1,8 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:animate_do/animate_do.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rounded_expansion_tile/rounded_expansion_tile.dart';
 
 import 'package:catmapp/src/globals.dart' show GetPlace, Place, ButtonCard, LabelIconButton;
@@ -15,52 +14,8 @@ const typeIcons = {
   'module': Icons.local_convenience_store_sharp,
 };
 
-class PlaceScreen extends StatefulWidget {
+class PlaceScreen extends GetView<GetPlace> {
   const PlaceScreen({Key? key}) : super(key: key);
-
-  @override
-  _PlaceScreenState createState() => _PlaceScreenState();
-}
-
-class _PlaceScreenState extends State<PlaceScreen> {
-  int selectedPlace = 0;
-  bool isLoadingChildren = false;
-  final getPlace = Get.find<GetPlace>();
-
-  @override
-  void initState() {
-    super.initState();
-    getPlace.findAll(refresh: true).whenComplete(() => setState(() => Null));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final slivers = <Widget>[
-      const SliverAppBar(
-        centerTitle: true,
-        title: Text('Places'),
-      )
-    ];
-
-    return Obx(() {
-      if (getPlace.places.isEmpty) {
-        slivers.add(reloadSliver());
-      } else {
-        slivers.addAll([
-          horizontalSliver(getPlace.places),
-          isLoadingChildren ? reloadSliver() : verticalSliver(getPlace.places[selectedPlace].places),
-        ]);
-      }
-
-      return RefreshIndicator(
-        color: Get.theme.colorScheme.secondary,
-        child: CustomScrollView(slivers: slivers),
-        onRefresh: () => getPlace.findAll(refresh: true).whenComplete(() {
-          setState(() => selectedPlace = 0);
-        }),
-      );
-    });
-  }
 
   Widget reloadSliver() {
     return const SliverFillRemaining(
@@ -73,11 +28,79 @@ class _PlaceScreenState extends State<PlaceScreen> {
     );
   }
 
-  Widget verticalSliver(List<Place>? places) {
+  Widget horizontalSliver() {
+    return SliverToBoxAdapter(
+      child: Container(
+        margin: EdgeInsets.zero,
+        height: Get.height / 5.25,
+        child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          itemCount: controller.places.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            final place = controller.places[index];
+            return ButtonCard(
+              elevation: 2,
+              height: Get.height / 5.25,
+              borderRadius: BorderRadius.circular(20),
+              isPressed: index == controller.selectedIndex,
+              onPressed: () => controller.setIndex(index, place.id!.toInt()),
+              children: [
+                Text(
+                  place.type!.name.toString().capitalize ?? '',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  place.code ?? '',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Icon(
+                    typeIcons[place.type!.name],
+                    size: 45,
+                    color: Get.theme.colorScheme.secondary,
+                  ),
+                ),
+                Text(
+                  '${place.places?.length ?? 0} place(s)',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  List<Widget> getLabelIcons(Place place, int index) {
+    final labelIcons = [
+      LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
+      LabelIconButton(iconData: Icons.task_rounded, label: 'tasks', onPressed: () {}),
+      LabelIconButton(iconData: Icons.inventory_2_rounded, label: 'inventory', onPressed: () {}),
+    ];
+
+    labelIcons.addIf(
+      place.hasPlaces,
+      LabelIconButton(
+        label: 'more',
+        iconData: Icons.more_rounded,
+        onPressed: () => controller.seeMorePlaces(index),
+      ),
+    );
+
+    return labelIcons;
+  }
+
+  Widget verticalSliver() {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final place = places![index];
+        (_, index) {
+          final place = controller.selectedPlace.places![index];
+
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Card(
@@ -109,8 +132,8 @@ class _PlaceScreenState extends State<PlaceScreen> {
                           margin: EdgeInsets.zero,
                           padding: EdgeInsets.zero,
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
                             color: Colors.grey,
+                            shape: BoxShape.circle,
                             image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
                           ),
                         );
@@ -125,103 +148,51 @@ class _PlaceScreenState extends State<PlaceScreen> {
                       style: const TextStyle(color: Colors.grey),
                     ),
                   ),
-                  // const Divider(indent: 30, endIndent: 30),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: getLabelIcons(places, index),
+                    children: getLabelIcons(
+                      controller.selectedPlace.places![index],
+                      index,
+                    ),
                   ),
                 ],
               ),
             ),
           );
         },
-        childCount: places?.length ?? 0,
+        childCount: controller.selectedPlace.places!.length,
       ),
     );
   }
 
-  List<Widget> getLabelIcons(List<Place>? places, int index) {
-    final labelIcons = [
-      LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
-      LabelIconButton(iconData: Icons.task_rounded, label: 'tasks', onPressed: () {}),
-      LabelIconButton(iconData: Icons.inventory_2_rounded, label: 'inventory', onPressed: () {}),
-    ];
-
-    labelIcons.addIf(
-      places![index].hasPlaces,
-      LabelIconButton(
-        iconData: Icons.more_rounded,
-        label: 'more',
-        onPressed: () {
-          setState(() => getPlace.places.clear());
-          getPlace.replaceAll(places.toList(), index).whenComplete(() {
-            setState(() => selectedPlace = index);
-          });
-        },
-      ),
-    );
-
-    return labelIcons;
-  }
-
-  Widget horizontalSliver(List<Place>? places) {
-    return SliverToBoxAdapter(
-      child: Container(
-        margin: EdgeInsets.zero,
-        height: Get.height / 5.25,
-        child: SlideInRight(
-          duration: const Duration(milliseconds: 250),
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            itemCount: places!.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              final place = places[index];
-              return ButtonCard(
-                elevation: 2,
-                height: Get.height / 5.25,
-                borderRadius: BorderRadius.circular(20),
-                isPressed: index == selectedPlace,
-                shadowColor: Colors.primaries[selectedPlace % Colors.primaries.length].shade100,
-                onPressed: () {
-                  if (index != selectedPlace) {
-                    selectedPlace = index;
-                    setState(() => isLoadingChildren = true);
-                    getPlace.findOne(place.id!.toInt(), index).whenComplete(() {
-                      setState(() => isLoadingChildren = false);
-                    });
-                  }
-                },
-                children: [
-                  Text(
-                    place.type!.name.toString().capitalize ?? '',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    place.code ?? '',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Icon(
-                      typeIcons[place.type!.name],
-                      size: 45,
-                      color: Get.theme.colorScheme.secondary,
-                    ),
-                  ),
-                  Text(
-                    '${place.places?.length ?? 0} place(s)',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              );
-            },
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () {
+        final slivers = <Widget>[
+          const SliverAppBar(
+            centerTitle: true,
+            title: Text('Places'),
           ),
-        ),
-      ),
+        ];
+
+        if (controller.isLoading) {
+          slivers.add(reloadSliver());
+        } else {
+          slivers.addAll([
+            horizontalSliver(),
+            controller.isLoadingChildren ? reloadSliver() : verticalSliver(),
+          ]);
+        }
+
+        return RefreshIndicator(
+          onRefresh: () async => controller.refresh(),
+          child: CustomScrollView(
+            slivers: slivers,
+          ),
+        );
+      },
     );
   }
 }
