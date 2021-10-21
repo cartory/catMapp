@@ -1,4 +1,5 @@
-// ignore_for_file: avoid_print, invalid_use_of_protected_member
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:convert';
 
 import 'package:get/get.dart';
