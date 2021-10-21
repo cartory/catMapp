@@ -187,6 +187,7 @@ class PlaceScreen extends GetView<GetPlace> {
         }
 
         return RefreshIndicator(
+          color: Get.theme.colorScheme.secondary,
           onRefresh: () async => controller.refresh(),
           child: CustomScrollView(
             slivers: slivers,
