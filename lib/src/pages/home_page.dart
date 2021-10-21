@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -24,37 +22,25 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> {
   User? _user;
   int _currentIndex = 2;
 
   final getPlace = Get.put(GetPlace());
 
-  late final Animation<double> animation;
-  late final AnimationController controller;
-
   @override
   void initState() {
     super.initState();
-
-    animation = Tween<double>(begin: 0, end: 1).animate(
-      controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 150)),
-    );
-
-    if (_currentIndex == 2) controller.forward();
     _user = User.fromRawJson(box.read<String>('user'));
   }
 
   @override
   void dispose() {
     super.dispose();
-    getPlace.dispose();
-    controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('render homePage');
     return Scaffold(
       // appBar: appBar(),
       body: _getCurrentScreen[_currentIndex]?.call(),
@@ -69,33 +55,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ],
         onTap: (index) {
           if (index != _currentIndex) {
-            if (index == 2) controller.forward();
             setState(() => _currentIndex = index);
           }
         },
       ),
-      floatingActionButton: floatingActionButton(),
-    );
-  }
-
-  Widget? floatingActionButton() {
-    if (_currentIndex != 2) return null;
-
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: animation.value,
-          child: child,
-        );
-      },
-      child: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          print(_currentIndex);
-          print(getPlace.places.length);
-        },
-      ),
+      floatingActionButton: _currentIndex == 2
+          ? MyFloatingActionButton(
+              iconData: Icons.add_rounded,
+              onPressed: () {},
+            )
+          : null,
     );
   }
 
@@ -129,10 +98,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   Icons.notifications_none_rounded,
                   size: 33,
                 ),
-                // ignore: avoid_print
-                onPressed: () {
-                  print('notification tap');
-                },
+                onPressed: () {},
               ),
               const Positioned(
                 top: 23,
