@@ -79,8 +79,8 @@ class Movement {
         id: json["id"],
         description: json["description"],
         reason: Reason.fromJson(json["reason"]),
-        placeTo: Place.fromJson(json["placeTo"]),
-        placeFrom: Place.fromJson(json["placeFrom"]),
+        placeTo: json["placeTo"] == null ? null : Place.fromJson(json["placeTo"]),
+        placeFrom: json["placeFrom"] == null ? null : Place.fromJson(json["placeFrom"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -94,6 +94,7 @@ class Movement {
 
 class Unit extends Type {
   Unit({int? id, String? name}) : super(id: id, name: name);
+  
   factory Unit.fromRawJson(String str) => Unit.fromJson(json.decode(str));
   factory Unit.fromJson(Map<String, dynamic> json) {
     return Unit(id: json["id"], name: json["name"]);
