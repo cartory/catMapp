@@ -16,12 +16,14 @@ class Routes {
   // tasks module
   // schedule module
   // inventory module
+  static const inventory = "/inventory";
 }
 
 final getPages = [
   GetPage(name: Routes.home, page: () => const HomePage()),
   // auth
   GetPage(name: Routes.login, page: () => LoginPage()),
+  GetPage(name: Routes.inventory, page: () => const InventoryPage())
   // GetPage(name: Routes.profile, page: () => const ProfilePage())
 ];
 
