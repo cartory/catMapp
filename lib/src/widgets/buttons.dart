@@ -143,7 +143,7 @@ class ButtonCard extends StatelessWidget {
         borderRadius: borderRadius,
         splashFactory: InkRipple.splashFactory,
         child: Card(
-          shadowColor: const Color(0xff383D4A).withOpacity(.7),
+          shadowColor: const Color(0xff383D4A).withOpacity(.5),
           elevation: isPressed ? 0 : elevation,
           color: isPressed ? Colors.grey[150] : color,
           shape: RoundedRectangleBorder(
