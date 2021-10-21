@@ -177,13 +177,44 @@ class PlaceScreen extends GetView<GetPlace> {
           ),
         ];
 
-        if (controller.isLoading) {
-          slivers.add(reloadSliver());
-        } else {
-          slivers.addAll([
-            horizontalSliver(),
-            controller.isLoadingChildren ? reloadSliver() : verticalSliver(),
-          ]);
+        try {
+          if (controller.isLoading) {
+            slivers.add(reloadSliver());
+          } else {
+            slivers.addAll(
+              [
+                horizontalSliver(),
+                controller.isLoadingChildren ? reloadSliver() : verticalSliver(),
+              ],
+            );
+          }
+        } catch (e) {
+          slivers.add(
+            SliverFillRemaining(
+              child: Transform.translate(
+                offset: const Offset(0, -35),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.perm_scan_wifi_rounded,
+                      color: Get.theme.colorScheme.secondary,
+                      size: 70,
+                    ),
+                    Text(
+                      'No Signal!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Get.theme.colorScheme.secondary,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
         }
 
         return RefreshIndicator(
