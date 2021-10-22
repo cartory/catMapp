@@ -33,20 +33,20 @@ class InventoryPage extends GetView<GetEquipment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Inventory ${controller.place.code ?? ''}'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.download, color: Get.theme.colorScheme.secondary),
+            onPressed: () {},
+          )
+        ],
+      ),
+      extendBodyBehindAppBar: true,
       body: Obx(
         () {
-          final slivers = <Widget>[
-            SliverAppBar(
-              centerTitle: true,
-              title: Text('Inventory ${controller.place.code ?? ''}'),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.download, color: Get.theme.colorScheme.secondary),
-                  onPressed: () {},
-                )
-              ],
-            )
-          ];
+          final slivers = <Widget>[];
 
           try {
             if (controller.isLoading) {
