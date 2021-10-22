@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_use_of_protected_member
+// ignore_for_file: invalid_use_of_protected_member, avoid_print
 
 import 'dart:convert';
 
@@ -35,10 +35,7 @@ class GetPlace extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    findAll(refresh: true).whenComplete(() {
-      _isLoading.value = false;
-      _isLoadingChildren.value = false;
-    });
+    refresh();
   }
 
   @override
