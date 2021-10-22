@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:rounded_expansion_tile/rounded_expansion_tile.dart';
+
 class MyFloatingActionButton extends StatefulWidget {
   final IconData? iconData;
   final void Function()? onPressed;
@@ -155,6 +157,58 @@ class ButtonCard extends StatelessWidget {
             children: children,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MyListTile extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+
+  final double? elevation;
+  final IconData? leadingIcon;
+  final List<Widget>? children;
+  final EdgeInsetsGeometry? margin;
+  final BorderRadiusGeometry? borderRadius;
+
+  const MyListTile({
+    Key? key,
+    required this.title,
+    this.margin,
+    this.subtitle,
+    this.children,
+    this.leadingIcon,
+    this.borderRadius,
+    this.elevation = 1,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: margin,
+      color: Colors.white,
+      elevation: elevation,
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadius ?? BorderRadius.circular(17),
+      ),
+      child: RoundedExpansionTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius ?? BorderRadius.circular(17),
+        ),
+        title: Text(title),
+        subtitle: subtitle != null ? Text(subtitle.toString()) : null,
+        minLeadingWidth: 30,
+        leading: SizedBox(
+          height: double.infinity,
+          child: Icon(leadingIcon, size: 30),
+        ),
+        trailing: const SizedBox(
+          height: double.infinity,
+          child: Icon(Icons.chevron_right_sharp, size: 25),
+        ),
+        childrenPadding: const EdgeInsets.all(10),
+        children: children ?? [],
       ),
     );
   }
