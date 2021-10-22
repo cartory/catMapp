@@ -68,7 +68,7 @@ final themeData = ThemeData(
     backgroundColor: Colors.white,
     iconTheme: const IconThemeData(
       size: 20,
-      color: Colors.white,
+      color: Color(0xff383D4A),
     ),
     titleTextStyle: const TextStyle(
       fontSize: 18,
