@@ -12,6 +12,7 @@ export 'pages/places/place_screen.dart';
 
 export 'pages/inventory/inventory_page.dart';
 
+export 'widgets/slivers.dart';
 export 'widgets/buttons.dart';
 export 'widgets/text_field.dart';
 export 'widgets/containers.dart';
@@ -26,5 +27,6 @@ export 'models/equipment.dart';
 
 // APIS - ENDPOINTS
 export 'getX/get_place.dart';
+export 'getX/get_equipment.dart';
 
 const API_URL = 'https://video-rental-system.herokuapp.com/api';
