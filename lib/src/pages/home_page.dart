@@ -1,3 +1,4 @@
+import 'package:catmapp/src/getX/get_equipment.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -27,7 +28,8 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 2;
 
   final getPlace = Get.put(GetPlace());
-
+  final getEquipment = Get.put(GetEquipment());
+  
   @override
   void initState() {
     super.initState();
@@ -36,6 +38,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    getPlace.dispose();
     super.dispose();
   }
 
