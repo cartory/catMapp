@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:rounded_expansion_tile/rounded_expansion_tile.dart';
 
-import 'package:catmapp/src/globals.dart' show GetPlace, Place, ButtonCard, LabelIconButton;
+import 'package:catmapp/src/config.dart';
+import 'package:catmapp/src/globals.dart';
 
 const typeIcons = {
   'office': Icons.event_seat_rounded,
@@ -16,17 +16,6 @@ const typeIcons = {
 
 class PlaceScreen extends GetView<GetPlace> {
   const PlaceScreen({Key? key}) : super(key: key);
-
-  Widget reloadSliver() {
-    return const SliverFillRemaining(
-      child: Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 3,
-          color: Color(0xff383D4A),
-        ),
-      ),
-    );
-  }
 
   Widget horizontalSliver() {
     return SliverToBoxAdapter(
@@ -80,8 +69,19 @@ class PlaceScreen extends GetView<GetPlace> {
     final labelIcons = [
       LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
       LabelIconButton(iconData: Icons.task_rounded, label: 'tasks', onPressed: () {}),
-      LabelIconButton(iconData: Icons.inventory_2_rounded, label: 'inventory', onPressed: () {}),
     ];
+
+    labelIcons.addIf(
+      !place.hasPlaces,
+      LabelIconButton(
+        iconData: Icons.inventory_2_rounded,
+        label: 'inventory',
+        onPressed: () async {
+          GetInstance().find<GetEquipment>().setPlace(place);
+          await Get.toNamed<void>(Routes.inventory);
+        },
+      ),
+    );
 
     labelIcons.addIf(
       place.hasPlaces,
@@ -103,61 +103,46 @@ class PlaceScreen extends GetView<GetPlace> {
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Card(
-              elevation: 1,
-              color: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
-              child: RoundedExpansionTile(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
-                title: Text('${place.type!.name.toString().capitalize} ${place.code}'),
-                subtitle: Text(place.name.toString()),
-                minLeadingWidth: 30,
-                leading: SizedBox(
-                  height: double.infinity,
-                  child: Icon(typeIcons[place.type!.name], size: 30),
+            child: MyListTile(
+              title: '${place.type!.name.toString().capitalize} ${place.code}',
+              subtitle: place.name.toString(),
+              leadingIcon: typeIcons[place.type!.name],
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: CachedNetworkImage(
+                    height: 150,
+                    imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
+                        margin: EdgeInsets.zero,
+                        padding: EdgeInsets.zero,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          shape: BoxShape.circle,
+                          image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-                trailing: const SizedBox(
-                  height: double.infinity,
-                  child: Icon(Icons.chevron_right_sharp, size: 25),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Text(
+                    place.description.toString(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
                 ),
-                childrenPadding: const EdgeInsets.all(10),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: CachedNetworkImage(
-                      height: 150,
-                      imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
-                      imageBuilder: (context, imageProvider) {
-                        return Container(
-                          margin: EdgeInsets.zero,
-                          padding: EdgeInsets.zero,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            shape: BoxShape.circle,
-                            image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
-                          ),
-                        );
-                      },
-                    ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: getLabelIcons(
+                    controller.selectedPlace.places![index],
+                    index,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Text(
-                      place.description.toString(),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: getLabelIcons(
-                      controller.selectedPlace.places![index],
-                      index,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
@@ -179,42 +164,17 @@ class PlaceScreen extends GetView<GetPlace> {
 
         try {
           if (controller.isLoading) {
-            slivers.add(reloadSliver());
+            slivers.add(const SliverReload());
           } else {
             slivers.addAll(
               [
                 horizontalSliver(),
-                controller.isLoadingChildren ? reloadSliver() : verticalSliver(),
+                controller.isLoadingChildren ? const SliverReload() : verticalSliver(),
               ],
             );
           }
         } catch (e) {
-          slivers.add(
-            SliverFillRemaining(
-              child: Transform.translate(
-                offset: const Offset(0, -35),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.perm_scan_wifi_rounded,
-                      color: Get.theme.colorScheme.secondary,
-                      size: 70,
-                    ),
-                    Text(
-                      'No Signal!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Get.theme.colorScheme.secondary,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
+          slivers.add(const SliverError());
         }
 
         return RefreshIndicator(
