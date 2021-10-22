@@ -3,20 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SliverReload extends StatelessWidget {
-  const SliverReload({Key? key}) : super(key: key);
+  final double? height;
+  const SliverReload({
+    Key? key,
+    this.height,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SliverFillRemaining(
-      child: Center(
-        child: Transform.scale(
-          scale: .75,
-          child: const CircularProgressIndicator(
-            strokeWidth: 3,
-            color: Color(0xff383D4A),
-          ),
-        ),
+    final circularIndicator = Transform.scale(
+      scale: .75,
+      child: CircularProgressIndicator(
+        strokeWidth: 3,
+        color: Get.theme.colorScheme.secondary,
       ),
+    );
+
+    if (height != null) {
+      return SliverToBoxAdapter(
+        child: Container(
+          height: height,
+          width: Get.width,
+          child: circularIndicator,
+          alignment: Alignment.center,
+        ),
+      );
+    }
+
+    return SliverFillRemaining(
+      child: Center(child: circularIndicator),
     );
   }
 }
