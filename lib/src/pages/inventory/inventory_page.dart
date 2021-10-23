@@ -22,7 +22,8 @@ class InventoryPage extends GetView<GetEquipment> {
             imageDescription: equipment.description,
             options: [
               LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
-              LabelIconButton(iconData: Icons.task_rounded, label: 'tasks', onPressed: () {}),
+              LabelIconButton(iconData: Icons.compare_arrows_rounded, label: 'moves', onPressed: () {}),
+              LabelIconButton(iconData: Icons.info_rounded, label: 'info', onPressed: () {}),
             ],
           );
         },
