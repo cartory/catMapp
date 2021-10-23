@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rounded_expansion_tile/rounded_expansion_tile.dart';
 
 class MyFloatingActionButton extends StatefulWidget {
@@ -168,23 +169,70 @@ class MyListTile extends StatelessWidget {
 
   final double? elevation;
   final IconData? leadingIcon;
-  final List<Widget>? children;
   final EdgeInsetsGeometry? margin;
   final BorderRadiusGeometry? borderRadius;
+
+  final String? imageUrl;
+  final String? imageDescription;
+  final List<LabelIconButton>? options;
 
   const MyListTile({
     Key? key,
     required this.title,
     this.margin,
     this.subtitle,
-    this.children,
     this.leadingIcon,
     this.borderRadius,
     this.elevation = 1,
+    this.options,
+    this.imageUrl,
+    this.imageDescription,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final children = <Widget>[];
+    if (imageUrl != null) {
+      children.insertAll(0, [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          child: CachedNetworkImage(
+            height: 150,
+            imageUrl: imageUrl.toString(),
+            imageBuilder: (context, imageProvider) {
+              return Container(
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          child: Text(
+            imageDescription.toString(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.grey),
+          ),
+        ),
+      ]);
+    }
+
+    if (options != null) {
+      children.add(
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: options ?? [],
+        ),
+      );
+    }
+
     return Card(
       margin: margin,
       color: Colors.white,
@@ -193,6 +241,8 @@ class MyListTile extends StatelessWidget {
         borderRadius: borderRadius ?? BorderRadius.circular(17),
       ),
       child: RoundedExpansionTile(
+        horizontalTitleGap: 20,
+        duration: const Duration(milliseconds: 350),
         shape: RoundedRectangleBorder(
           borderRadius: borderRadius ?? BorderRadius.circular(17),
         ),
@@ -205,10 +255,10 @@ class MyListTile extends StatelessWidget {
         ),
         trailing: const SizedBox(
           height: double.infinity,
-          child: Icon(Icons.chevron_right_sharp, size: 25),
+          child: Icon(Icons.keyboard_arrow_down_rounded, size: 25),
         ),
         childrenPadding: const EdgeInsets.all(10),
-        children: children ?? [],
+        children: children,
       ),
     );
   }
