@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+
 import 'package:catmapp/src/globals.dart';
 
 class InventoryPage extends GetView<GetEquipment> {
@@ -12,17 +13,17 @@ class InventoryPage extends GetView<GetEquipment> {
         (context, index) {
           final equipment = controller.equipments[index];
 
-          return Card(
-            elevation: 1,
+          return MyListTile(
+            leadingIcon: Icons.inbox,
+            borderRadius: BorderRadius.zero,
             margin: const EdgeInsets.symmetric(vertical: .1),
-            child: ListTile(
-              // borderRadius: BorderRadius.zero,
-              // title: equipment.code.toString(),
-              tileColor: Colors.white,
-              leading: const Icon(Icons.article),
-              title: Text(equipment.code.toString()),
-              // margin: const EdgeInsets.symmetric(vertical: .1),
-            ),
+            title: equipment.code.toString(),
+            imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
+            imageDescription: equipment.description,
+            options: [
+              LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
+              LabelIconButton(iconData: Icons.task_rounded, label: 'tasks', onPressed: () {}),
+            ],
           );
         },
         childCount: controller.equipments.length,
@@ -40,10 +41,9 @@ class InventoryPage extends GetView<GetEquipment> {
           IconButton(
             icon: Icon(Icons.download, color: Get.theme.colorScheme.secondary),
             onPressed: () {},
-          )
+          ),
         ],
       ),
-      extendBodyBehindAppBar: true,
       body: Obx(
         () {
           final slivers = <Widget>[];
