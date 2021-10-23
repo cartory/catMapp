@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
@@ -58,15 +56,13 @@ class GetEquipment extends GetxController {
     super.onClose();
   }
 
-  Future<void> findAll({int limit = 15, bool refresh = false}) async {
+  Future<void> findAll({int limit = 20, bool refresh = false}) async {
     try {
       String url = '$API_URL/equipments?page=$_page&limit=$limit';
 
       if (place.id != null) {
         url += '&placeId=${place.id}';
       }
-
-      print(url);
 
       final res = await http.get(Uri.parse(url));
 
