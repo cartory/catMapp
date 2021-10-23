@@ -65,7 +65,7 @@ class PlaceScreen extends GetView<GetPlace> {
     );
   }
 
-  List<Widget> getLabelIcons(Place place, int index) {
+  List<LabelIconButton>? getLabelIcons(Place place, int index) {
     final labelIcons = [
       LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
       LabelIconButton(iconData: Icons.task_rounded, label: 'tasks', onPressed: () {}),
@@ -107,42 +107,9 @@ class PlaceScreen extends GetView<GetPlace> {
               title: '${place.type!.name.toString().capitalize} ${place.code}',
               subtitle: place.name.toString(),
               leadingIcon: typeIcons[place.type!.name],
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: CachedNetworkImage(
-                    height: 150,
-                    imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
-                    imageBuilder: (context, imageProvider) {
-                      return Container(
-                        margin: EdgeInsets.zero,
-                        padding: EdgeInsets.zero,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                          image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    place.description.toString(),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: getLabelIcons(
-                    controller.selectedPlace.places![index],
-                    index,
-                  ),
-                ),
-              ],
+              imageDescription: place.description,
+              imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
+              options: getLabelIcons(controller.selectedPlace.places![index], index),
             ),
           );
         },
