@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 
 import 'package:catmapp/src/globals.dart';
 
@@ -57,24 +54,8 @@ class GetEquipment extends GetxController {
   }
 
   Future<void> findAll({int limit = 20, bool refresh = false}) async {
-    try {
-      String url = '$API_URL/equipments?page=$_page&limit=$limit';
-
-      if (place.id != null) {
-        url += '&placeId=${place.id}';
-      }
-
-      final res = await http.get(Uri.parse(url));
-
-      final data = json.decode(res.body);
-      if (res.statusCode == 500) throw Exception(data['message']);
-
-      if (refresh) equipments.clear();
-
-      final newEquipments = data.map<Equipment>((e) => Equipment.fromJson(e));
-      equipments.addAllIf(newEquipments.isNotEmpty, newEquipments);
-    } catch (e) {
-      print(e);
-    }
+    if (refresh) equipments.clear();
+    final newEquipments = await EquipmentApi.findAll(page: _page, limit: limit);
+    equipments.addAllIf(newEquipments.isNotEmpty, newEquipments);
   }
 }
