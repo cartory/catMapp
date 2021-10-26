@@ -76,7 +76,9 @@ class InventoryPage extends GetView<GetEquipment> {
       ),
       floatingActionButton: MyFloatingActionButton(
         iconData: Icons.search_rounded,
-        onPressed: () {},
+        onPressed: () async {
+          await showSearch(context: context, delegate: SearchEquipment());
+        },
       ),
     );
   }
