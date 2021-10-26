@@ -43,6 +43,11 @@ final themeData = ThemeData(
     secondary: const Color(0xff383D4A),
     secondaryVariant: const Color(0xffA8877B),
   ),
+  // textSelectionTheme
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: Color(0x44383D4A),
+    selectionHandleColor: Colors.lightBlue,
+  ),
   // BottomNavigationBarThemeData
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     elevation: 0,
