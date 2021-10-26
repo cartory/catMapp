@@ -1,11 +1,6 @@
-// ignore_for_file: invalid_use_of_protected_member, avoid_print
-
-import 'dart:convert';
-
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
-import 'package:catmapp/src/globals.dart' show Place, API_URL;
+import 'package:catmapp/src/globals.dart';
 
 class GetPlace extends GetxController {
   final _selectedIndex = 0.obs;
@@ -14,7 +9,7 @@ class GetPlace extends GetxController {
   final _isLoading = true.obs;
   final _isLoadingChildren = true.obs;
 
-  List<Place> get places => _places.value;
+  List<Place> get places => _places;
 
   int get selectedIndex => _selectedIndex.value;
   Place get selectedPlace => places[selectedIndex];
@@ -76,29 +71,16 @@ class GetPlace extends GetxController {
   }
 
   Future<void> findAll({int page = 0, bool refresh = false}) async {
-    try {
-      final res = await http.get(Uri.parse('$API_URL/places?page=$page'));
-
-      final data = json.decode(res.body);
-      if (res.statusCode == 500) throw Exception(data['message']);
-
-      if (refresh) places.clear();
-      places.addAll(data.map<Place>((place) => Place.fromJson(place)));
-    } catch (err) {
-      print(err);
-    }
+    if (refresh) places.clear();
+    final newPlaces = await PlaceApi.findAll(page);
+    places.addAllIf(newPlaces.isNotEmpty, newPlaces);
   }
 
   Future<void> findOne(int id, int index) async {
-    try {
-      final res = await http.get(Uri.parse('$API_URL/places/$id'));
+    final findPlace = await PlaceApi.findOne(id);
 
-      final data = json.decode(res.body);
-      if (res.statusCode == 500) throw Exception(data['message']);
-      
-      places[index] = Place.fromJson(data);
-    } catch (err) {
-      print(err);
+    if (findPlace != null) {
+      places[index] = findPlace;
     }
   }
 }
