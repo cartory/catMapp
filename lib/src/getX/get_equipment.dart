@@ -53,9 +53,14 @@ class GetEquipment extends GetxController {
     super.onClose();
   }
 
-  Future<void> findAll({int limit = 20, bool refresh = false}) async {
+  Future<void> findAll({int limit = 20, bool refresh = false, String? query}) async {
     if (refresh) equipments.clear();
-    final newEquipments = await EquipmentApi.findAll(page: _page, limit: limit);
+    final newEquipments = await EquipmentApi.findAll(
+      page: _page,
+      limit: limit,
+      query: query,
+      placeId: place.id,
+    );
     equipments.addAllIf(newEquipments.isNotEmpty, newEquipments);
   }
 }
