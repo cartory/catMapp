@@ -62,7 +62,7 @@ class SearchEquipment extends SearchDelegate<Equipment> {
 
   @override
   Widget buildResults(BuildContext context) {
-    throw const Text('show results');
+    return getQuerySuggestions();
   }
 
   Widget getQuerySuggestions() {
@@ -117,7 +117,11 @@ class SearchEquipment extends SearchDelegate<Equipment> {
                 ],
               )),
               imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
-              // imageDescription: equipment.description,
+              imageDescription: Text(
+                equipment.description.toString(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.grey),
+              ),
               options: [
                 LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
                 LabelIconButton(iconData: Icons.compare_arrows_rounded, label: 'moves', onPressed: () {}),
@@ -141,7 +145,7 @@ class SearchEquipment extends SearchDelegate<Equipment> {
       child: Text(
         'Search 🔍!',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20, color: Get.theme.colorScheme.secondary),
+        style: TextStyle(fontSize: 25, color: Get.theme.colorScheme.secondary),
       ),
     );
   }
