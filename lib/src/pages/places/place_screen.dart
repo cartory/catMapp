@@ -107,7 +107,11 @@ class PlaceScreen extends GetView<GetPlace> {
               title: '${place.type!.name.toString().capitalize} ${place.code}',
               subtitle: Text(place.name.toString()),
               leadingIcon: typeIcons[place.type!.name],
-              imageDescription: Text(place.description.toString()),
+              imageDescription: Text(
+                place.description.toString(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.grey),
+              ),
               imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
               options: getLabelIcons(controller.selectedPlace.places![index], index),
             ),
