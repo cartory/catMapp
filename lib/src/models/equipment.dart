@@ -39,7 +39,7 @@ class Equipment {
         observations: json["observations"],
         unit: Unit.fromJson(json["unit"]),
         places: List<Place>.from(json["places"].map((x) => Place.fromJson(x))),
-        movements: List<Movement>.from(json["movements"].map((x) => Movement.fromJson(x))),
+        movements: json["movements"] == null ? null : List<Movement>.from(json["movements"].map((x) => Movement.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -94,7 +94,7 @@ class Movement {
 
 class Unit extends Type {
   Unit({int? id, String? name}) : super(id: id, name: name);
-  
+
   factory Unit.fromRawJson(String str) => Unit.fromJson(json.decode(str));
   factory Unit.fromJson(Map<String, dynamic> json) {
     return Unit(id: json["id"], name: json["name"]);
