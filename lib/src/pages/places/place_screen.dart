@@ -27,6 +27,7 @@ class PlaceScreen extends GetView<GetPlace> {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             final place = controller.places[index];
+
             return ButtonCard(
               elevation: 2,
               height: Get.height / 5.25,
@@ -104,9 +105,9 @@ class PlaceScreen extends GetView<GetPlace> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: MyListTile(
               title: '${place.type!.name.toString().capitalize} ${place.code}',
-              subtitle: place.name.toString(),
+              subtitle: Text(place.name.toString()),
               leadingIcon: typeIcons[place.type!.name],
-              imageDescription: place.description,
+              imageDescription: Text(place.description.toString()),
               imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
               options: getLabelIcons(controller.selectedPlace.places![index], index),
             ),
