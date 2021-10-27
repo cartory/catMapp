@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -18,8 +19,25 @@ class InventoryPage extends GetView<GetEquipment> {
             borderRadius: BorderRadius.zero,
             margin: const EdgeInsets.symmetric(vertical: .1),
             title: equipment.code.toString(),
+            subtitle: Text.rich(TextSpan(
+              text: 'UNIT:',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(
+                  text: '${equipment.unit!.name}\t\t\t\t',
+                  style: const TextStyle(fontWeight: FontWeight.normal),
+                ),
+                TextSpan(text: 'STATE: ', children: [
+                  TextSpan(text: '${equipment.state}', style: const TextStyle(fontWeight: FontWeight.normal)),
+                ]),
+              ],
+            )),
             imageUrl: 'https://i.pinimg.com/736x/6c/92/22/6c922234c15e5d66a3c4ff659cef95d5.jpg',
-            imageDescription: equipment.description,
+            imageDescription: Text(
+              equipment.description.toString(),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.grey),
+            ),
             options: [
               LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
               LabelIconButton(iconData: Icons.compare_arrows_rounded, label: 'moves', onPressed: () {}),
@@ -77,7 +95,7 @@ class InventoryPage extends GetView<GetEquipment> {
       floatingActionButton: MyFloatingActionButton(
         iconData: Icons.search_rounded,
         onPressed: () async {
-          await showSearch(context: context, delegate: SearchEquipment());
+          await showSearch(context: context, delegate: SearchEquipment(controller.place));
         },
       ),
     );
