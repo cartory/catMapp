@@ -165,7 +165,7 @@ class ButtonCard extends StatelessWidget {
 
 class MyListTile extends StatelessWidget {
   final String title;
-  final String? subtitle;
+  final Widget? subtitle;
 
   final double? elevation;
   final IconData? leadingIcon;
@@ -173,7 +173,7 @@ class MyListTile extends StatelessWidget {
   final BorderRadiusGeometry? borderRadius;
 
   final String? imageUrl;
-  final String? imageDescription;
+  final Widget? imageDescription;
   final List<LabelIconButton>? options;
 
   const MyListTile({
@@ -214,11 +214,7 @@ class MyListTile extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 3),
-          child: Text(
-            imageDescription.toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.grey),
-          ),
+          child: imageDescription,
         ),
       ]);
     }
@@ -247,7 +243,7 @@ class MyListTile extends StatelessWidget {
           borderRadius: borderRadius ?? BorderRadius.circular(17),
         ),
         title: Text(title),
-        subtitle: subtitle != null ? Text(subtitle.toString()) : null,
+        subtitle: subtitle,
         minLeadingWidth: 30,
         leading: SizedBox(
           height: double.infinity,
