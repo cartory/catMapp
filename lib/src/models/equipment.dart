@@ -21,6 +21,8 @@ class Equipment {
   String? photoUrl;
   String? description;
   String? observations;
+  
+  bool isSelected = false;
 
   Unit? unit;
   List<Place>? places;
