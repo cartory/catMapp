@@ -9,12 +9,15 @@ class GetEquipment extends GetxController {
 
   final _isLoading = true.obs;
   final _isNextPage = false.obs;
+  final _isModeSelected = false.obs;
 
   int _page = 0;
 
   Place get place => _place.value;
   bool get isLoading => _isLoading.value;
   bool get isNextPage => _isNextPage.value;
+  bool get isModeSelected => _isModeSelected.value;
+
   List<Equipment> get equipments => _equipments;
 
   final ScrollController scrollController = ScrollController();
@@ -22,6 +25,20 @@ class GetEquipment extends GetxController {
   void setPlace(Place? newPlace) {
     _place.value = newPlace ?? Place();
     refresh();
+  }
+
+  void clearSelect() {
+    _equipments.value = _equipments.map((e) => e..isSelected = false).toList();
+  }
+
+  set isModeSelected(bool value) {
+    _isLoading.value = true;
+    _isModeSelected.value = value;
+    _isLoading.value = false;
+  }
+
+  void setChecked(int index, bool value) {
+    _equipments[index] = _equipments[index]..isSelected = value;
   }
 
   @override
@@ -41,6 +58,7 @@ class GetEquipment extends GetxController {
     super.refresh();
     _page = 0;
     _isLoading.value = true;
+    _isModeSelected.value = false;
     findAll(refresh: true).whenComplete(() => _isLoading.value = false);
   }
 
