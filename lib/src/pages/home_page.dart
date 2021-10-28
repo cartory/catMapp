@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
   final getPlace = Get.put(GetPlace());
   final getEquipment = Get.put(GetEquipment());
-  
+
   @override
   void initState() {
     super.initState();
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       // appBar: appBar(),
       body: _getCurrentScreen[_currentIndex]?.call(),
-      extendBody: true,
+      extendBody: false,
       bottomNavigationBar: MyBottomBar(
         currentIndex: _currentIndex,
         items: const [
