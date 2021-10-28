@@ -15,9 +15,21 @@ class InventoryPage extends GetView<GetEquipment> {
           final equipment = controller.equipments[index];
 
           return MyListTile(
-            leadingIcon: Icons.inbox,
+            leading: controller.isModeSelected
+                ? Transform.scale(
+                    scale: 1.25,
+                    child: Checkbox(
+                      value: equipment.isSelected,
+                      activeColor: Get.theme.colorScheme.secondaryVariant,
+                      onChanged: (value) => controller.setChecked(index, value!),
+                    ),
+                  )
+                : const Icon(Icons.inbox, size: 27),
             borderRadius: BorderRadius.zero,
             margin: const EdgeInsets.symmetric(vertical: .1),
+            onLongPress: () {
+              controller.isModeSelected = !controller.isModeSelected;
+            },
             title: equipment.code.toString(),
             subtitle: Text.rich(TextSpan(
               text: 'UNIT:',
