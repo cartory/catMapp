@@ -20,7 +20,8 @@ class PlaceScreen extends GetView<GetPlace> {
     return SliverToBoxAdapter(
       child: Container(
         margin: EdgeInsets.zero,
-        height: Get.height / 5.25,
+        width: Get.height / 5.5,
+        height: Get.height / 5.5,
         child: ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           itemCount: controller.places.length,
@@ -30,7 +31,7 @@ class PlaceScreen extends GetView<GetPlace> {
 
             return ButtonCard(
               elevation: 2,
-              height: Get.height / 5.25,
+              height: Get.height / 5.5,
               borderRadius: BorderRadius.circular(20),
               isPressed: index == controller.selectedIndex,
               onPressed: () => controller.setIndex(index, place.id!.toInt()),
@@ -106,7 +107,7 @@ class PlaceScreen extends GetView<GetPlace> {
             child: MyListTile(
               title: '${place.type!.name.toString().capitalize} ${place.code}',
               subtitle: Text(place.name.toString()),
-              leadingIcon: typeIcons[place.type!.name],
+              leading: Icon(typeIcons[place.type!.name], size: 27),
               imageDescription: Text(
                 place.description.toString(),
                 textAlign: TextAlign.center,
@@ -143,6 +144,8 @@ class PlaceScreen extends GetView<GetPlace> {
                 controller.isLoadingChildren ? const SliverReload() : verticalSliver(),
               ],
             );
+
+            slivers.add(const SliverToBoxAdapter(child: SizedBox(height: 50)));
           }
         } catch (e) {
           slivers.add(const SliverError());
