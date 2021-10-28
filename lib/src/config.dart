@@ -41,7 +41,13 @@ final themeData = ThemeData(
     primaryVariant: const Color(0xff4757D5),
     //
     secondary: const Color(0xff383D4A),
-    secondaryVariant: const Color(0xffA8877B),
+    secondaryVariant: const Color(0xffEB008B),
+  ),
+  // checkboxThemData
+  checkboxTheme: CheckboxThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(3),
+    ),
   ),
   // textSelectionTheme
   textSelectionTheme: const TextSelectionThemeData(
