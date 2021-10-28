@@ -41,6 +41,7 @@ dependencies:
   animate_do: ^2.0.0
   cached_network_image: ^3.1.0
   rounded_expansion_tile: ^0.0.13
+  multiple_stream_builder: ^2.0.0
   syncfusion_flutter_calendar: ^19.2.62
   
   # firebase dependencies
