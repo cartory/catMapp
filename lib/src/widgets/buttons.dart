@@ -165,12 +165,13 @@ class ButtonCard extends StatelessWidget {
 
 class MyListTile extends StatelessWidget {
   final String title;
+  final Widget? leading;
   final Widget? subtitle;
 
   final double? elevation;
-  final IconData? leadingIcon;
   final EdgeInsetsGeometry? margin;
   final BorderRadiusGeometry? borderRadius;
+  final void Function()? onLongPress;
 
   final String? imageUrl;
   final Widget? imageDescription;
@@ -181,11 +182,12 @@ class MyListTile extends StatelessWidget {
     required this.title,
     this.margin,
     this.subtitle,
-    this.leadingIcon,
+    this.leading,
     this.borderRadius,
     this.elevation = 1,
     this.options,
     this.imageUrl,
+    this.onLongPress,
     this.imageDescription,
   }) : super(key: key);
 
@@ -195,9 +197,9 @@ class MyListTile extends StatelessWidget {
     if (imageUrl != null) {
       children.insertAll(0, [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 3),
+          padding: const EdgeInsets.symmetric(vertical: 0),
           child: CachedNetworkImage(
-            height: 150,
+            height: 110,
             imageUrl: imageUrl.toString(),
             imageBuilder: (context, imageProvider) {
               return Container(
@@ -238,22 +240,20 @@ class MyListTile extends StatelessWidget {
       ),
       child: RoundedExpansionTile(
         horizontalTitleGap: 20,
-        duration: const Duration(milliseconds: 350),
+        duration: const Duration(milliseconds: 400),
+        onLongPress: onLongPress,
         shape: RoundedRectangleBorder(
           borderRadius: borderRadius ?? BorderRadius.circular(17),
         ),
-        title: Text(title),
+        title: Text(title, style: const TextStyle(fontSize: 15)),
         subtitle: subtitle,
-        minLeadingWidth: 30,
-        leading: SizedBox(
-          height: double.infinity,
-          child: Icon(leadingIcon, size: 30),
-        ),
+        minLeadingWidth: 25,
+        leading: SizedBox(height: double.infinity, child: leading),
         trailing: const SizedBox(
           height: double.infinity,
           child: Icon(Icons.keyboard_arrow_down_rounded, size: 25),
         ),
-        childrenPadding: const EdgeInsets.all(10),
+        childrenPadding: const EdgeInsets.all(0),
         children: children,
       ),
     );
