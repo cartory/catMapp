@@ -57,12 +57,12 @@ final themeData = ThemeData(
   // BottomNavigationBarThemeData
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     elevation: 0,
-    backgroundColor: Colors.white,
-    selectedItemColor: Color(0xff383D4A),
-    unselectedItemColor: Color(0xff383D4A),
-    type: BottomNavigationBarType.fixed,
     showSelectedLabels: true,
     showUnselectedLabels: true,
+    backgroundColor: Colors.white,
+    type: BottomNavigationBarType.fixed,
+    selectedItemColor: Color(0xff383D4A),
+    unselectedItemColor: Color(0xff383D4A),
     // selected
     // selectedLabelStyle: TextStyle(color: Colors.white),
     selectedLabelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
@@ -116,6 +116,10 @@ final themeData = ThemeData(
   ),
   // inputdecoration theme
   inputDecorationTheme: InputDecorationTheme(
+    floatingLabelStyle: const TextStyle(
+      color: Color(0xaacc4488),
+      fontWeight: FontWeight.w400,
+    ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
