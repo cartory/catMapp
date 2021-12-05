@@ -1,19 +1,19 @@
-import 'package:catmapp/src/getX/get_equipment.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import 'package:catmapp/src/config.dart';
+import 'package:catmapp/src/globals.dart';
+
+import 'package:catmapp/src/getX/get_equipment.dart';
 import 'package:catmapp/src/pages/tasks/task_screen.dart';
 
-import 'package:catmapp/src/globals.dart';
-import 'package:catmapp/src/config.dart' show box;
-
-Map<int, Widget? Function()> _getCurrentScreen = {
-  0: () => const HomeScreen(),
-  1: () => const TaskScreen(),
-  2: () => const PlaceScreen(),
-  3: () => ProfileScreen(),
+final _getCurrentScreen = {
+  0: const HomeScreen(),
+  1: const TaskScreen(),
+  2: const PlaceScreen(),
+  3: ProfileScreen(),
 };
 
 class HomePage extends StatefulWidget {
@@ -45,8 +45,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: appBar(),
-      body: _getCurrentScreen[_currentIndex]?.call(),
+      body: _getCurrentScreen[_currentIndex],
       extendBody: false,
       bottomNavigationBar: MyBottomBar(
         currentIndex: _currentIndex,
@@ -65,7 +64,12 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: _currentIndex == 2
           ? MyFloatingActionButton(
               iconData: Icons.add_rounded,
-              onPressed: () {},
+              onPressed: () async => await Get.bottomSheet(
+                BottomSheet(
+                  onClosing: () {},
+                  builder: (_) => const PlaceFormSheet(),
+                ),
+              ),
             )
           : null,
     );
