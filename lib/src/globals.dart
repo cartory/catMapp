@@ -17,6 +17,7 @@ export 'widgets/slivers.dart';
 export 'widgets/buttons.dart';
 export 'widgets/text_field.dart';
 export 'widgets/containers.dart';
+export 'widgets/form_sheets.dart';
 
 // SERVICES
 export 'services/auth.dart';
@@ -24,11 +25,14 @@ export 'services/storage.dart';
 export 'services/place.api.dart';
 export 'services/equipment.api.dart';
 
-
 // MODELS
 export 'models/user.dart';
 export 'models/place.dart';
 export 'models/equipment.dart';
+
+// UTILS
+export 'utils/dialogs.dart';
+export 'utils/debouncer.dart';
 
 // GETX
 export 'getX/get_place.dart';
