@@ -8,8 +8,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:firebase_database/firebase_database.dart';
 
-import 'package:catmapp/src/config.dart' show box;
-import 'package:catmapp/src/globals.dart' show User, API_URL;
+import '../config.dart' show box;
+import '../globals.dart' show User, API_URL;
 
 class Auth {
   static final _instance = Auth();
