@@ -68,7 +68,16 @@ class PlaceScreen extends GetView<GetPlace> {
 
   List<LabelIconButton>? getLabelIcons(Place place, int index) {
     final labelIcons = [
-      LabelIconButton(iconData: Icons.edit_rounded, label: 'edit', onPressed: () {}),
+      LabelIconButton(
+        label: 'edit',
+        iconData: Icons.edit_rounded,
+        onPressed: () async => await Get.bottomSheet(
+          BottomSheet(
+            onClosing: () {},
+            builder: (_) => PlaceFormSheet(place: place),
+          ),
+        ),
+      ),
       LabelIconButton(iconData: Icons.task_rounded, label: 'tasks', onPressed: () {}),
     ];
 
